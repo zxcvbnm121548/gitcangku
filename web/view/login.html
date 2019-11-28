@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<form>
+    会员名:<input type="text" id="memberName">
+    会员密码:<input type="password" id="password">
+    <input type="button" value="登录" onclick="login()">
+    <input type="reset" value="重置">
+</form>
+
+<script src="/js/jquery-3.3.1.js"></script>
+<script src="/js/jquery.cookie.min.js"></script>
+<script>
+function login() {
+    var v_memberName = $("#memberName").val();
+    var v_password = $("#password").val();
+    var param = {};
+    param.memberName = v_memberName;
+    param.passWord = v_password;
+  $.ajax({
+      type:"post",
+      url:"http://localhost:8082/Member/login",
+      data:param,
+      success:function (result) {
+          if (result.status == 200) {
+              //alert(result.data);
+              // 将信息存入window.localStorage
+              window.localStorage.setItem("token", result.data);
+              // 将信息临时存入cookie
+           // $.cookie("fh_token", result.data);
+             // 跳转到首页
+              location.href = "/view/index1.html";
+          } else {
+              alert(result.msg);
+          }
+      }
+  })
+}
+</script>
+</body>
+</html>
